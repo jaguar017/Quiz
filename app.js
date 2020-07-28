@@ -4,7 +4,9 @@ const bodyParser = require("body-parser");
 const cors = require('cors')
 const authRoutes = require('./routes/googleauth')
 const passport = require("passport")
-const cookieSession = require('cookie-session')
+const session = require('express-session')
+const MongoStore = require('connect-mongo')(session)
+const { ensureAuth, ensureGuest } = require('./middleware/auth')
 require("dotenv").config();
 require('./config/passport-setup')
 
@@ -29,11 +31,17 @@ mongoose.Promise = global.Promise;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.use(cookieSession({
-    name: 'quiz-session',
-    keys: ['key1', 'key2']
-  }))
    
+// Sessions
+app.use(
+    session({
+      secret: 'keyboard cat',
+      resave: false,
+      saveUninitialized: false,
+     store: new MongoStore({ mongooseConnection: mongoose.connection,touchAfter: 24 * 3600 }),
+    })
+)
+
 // initialize passport
 app.use(passport.initialize());
 app.use(passport.session());
@@ -45,8 +53,8 @@ app.use(cors())
 
 app.use('/auth',authRoutes)
 
-app.get('/',(req,res) => {
-    res.send('Hello')
+app.get('/',ensureGuest,(req,res) => {
+    res.render('home')
 })
 
 const PORT = process.env.PORT || 3000;
