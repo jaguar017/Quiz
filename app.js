@@ -1,12 +1,21 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const cors = require('cors')
+const authRoutes = require('./routes/googleauth')
+const passport = require("passport")
+const cookieSession = require('cookie-session')
 require("dotenv").config();
+require('./config/passport-setup')
 
 
 
-//routing
 const app = express();
+
+
+
+//set up view engine as ejs
+app.set('view engine','ejs');
 
 //Database connection
 const MONGOURI = process.env.MONGOURI;
@@ -20,6 +29,21 @@ mongoose.Promise = global.Promise;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+app.use(cookieSession({
+    name: 'quiz-session',
+    keys: ['key1', 'key2']
+  }))
+   
+// initialize passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+app.use(cors())
+
+//setup routes
+
+app.use('/auth',authRoutes)
 
 app.get('/',(req,res) => {
     res.send('Hello')
