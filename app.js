@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require('cors')
 const authRoutes = require('./routes/googleauth')
+const local = require('./routes/localauth')
 const passport = require("passport")
 const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
@@ -52,6 +53,7 @@ app.use(cors())
 //setup routes
 
 app.use('/auth',authRoutes)
+app.use('/user',local)
 
 app.get('/',ensureGuest,(req,res) => {
     res.render('home')
