@@ -2,14 +2,14 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require('cors')
-const authRoutes = require('./routes/googleauth')
-const local = require('./routes/localauth')
+
+
 const passport = require("passport")
 const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
-const { ensureAuth, ensureGuest } = require('./middleware/auth')
+
 require("dotenv").config();
-require('./config/passport-setup')
+
 
 
 
@@ -52,10 +52,9 @@ app.use(cors())
 
 //setup routes
 
-app.use('/auth',authRoutes)
-app.use('/user',local)
 
-app.get('/',ensureGuest,(req,res) => {
+
+app.get('/',(req,res) => {
     res.render('home')
 })
 
