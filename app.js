@@ -10,11 +10,7 @@ const MongoStore = require('connect-mongo')(session)
 
 require("dotenv").config();
 
-
-
-
 const app = express();
-
 
 
 //set up view engine as ejs
@@ -33,30 +29,38 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
    
-// Sessions
-app.use(
-    session({
-      secret: 'keyboard cat',
-      resave: false,
-      saveUninitialized: false,
-     store: new MongoStore({ mongooseConnection: mongoose.connection,touchAfter: 24 * 3600 }),
-    })
-)
+// // Sessions
+// app.use(
+//     session({
+//       secret: 'keyboard cat',
+//       resave: false,
+//       saveUninitialized: false,
+//      store: new MongoStore({ mongooseConnection: mongoose.connection,touchAfter: 24 * 3600 }),
+//     })
+// )
 
-// initialize passport
-app.use(passport.initialize());
-app.use(passport.session());
+// // initialize passport
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 
 app.use(cors())
 
 //setup routes
 
+  app.use("/", require("./routes"));
+
+  
+  // error handler
+  app.use((err, req, res, next) => {
+    console.log(err.message);
+    return res.status(400).send({
+      message: err.message,
+    });
+  });
 
 
-app.get('/',(req,res) => {
-    res.render('home')
-})
+
 
 const PORT = process.env.PORT || 3000;
 
