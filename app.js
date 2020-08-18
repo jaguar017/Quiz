@@ -48,8 +48,8 @@ app.use(cors())
 
 //setup routes
 
-  app.use("/", require("./routes"));
-
+  app.use("/", require("./routes/quiz"));
+  app.use("/question", require("./routes/question"));
   
   // error handler
   app.use((err, req, res, next) => {
