@@ -54,6 +54,13 @@ router.put('/update/:id', async function(req, res)  {
 		
 			
 			  
+			})
+
+//delete form
+router.delete('/delete/:id', async (req, res) => {
+				await Form.findByIdAndDelete(req.params.id)
+				console.log("deleted form")
+				res.status(200).json({ message: "deleted form"});
 			  })
 
 module.exports = router;

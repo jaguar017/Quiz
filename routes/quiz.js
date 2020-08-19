@@ -61,4 +61,10 @@ router.put('/update/:id', async function(req, res)  {
 			  
 			  })
 
+//delete quiz
+router.delete('/delete/:id', async (req, res) => {
+				await Quiz.findByIdAndDelete(req.params.id)
+				console.log("deleted quiz")
+				res.status(200).json({ message: "deleted quiz"});
+			  })			  
 module.exports = router;
