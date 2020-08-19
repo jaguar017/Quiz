@@ -47,9 +47,9 @@ app.use(bodyParser.json());
 app.use(cors())
 
 //setup routes
-
-  app.use("/", require("./routes/quiz"));
-  app.use("/question", require("./routes/question"));
+app.use("/", require("./routes/home"));
+  app.use("/quiz", require("./routes/quiz"));
+  app.use("/form", require("./routes/feedbackform"));
   
   // error handler
   app.use((err, req, res, next) => {

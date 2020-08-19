@@ -1,6 +1,6 @@
 
 const router = require("express").Router();
-const Question = require("../models/question");
+
 
 const ensureAuthenticated = require("../middleware/ensureAuthenticated");
 const { database } = require("firebase-admin");

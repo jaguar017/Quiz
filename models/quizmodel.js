@@ -1,46 +1,58 @@
 const mongoose = require("mongoose");
 
-const FormSchema = new mongoose.Schema({
-	formTitle: { 
+const quizSchema = new mongoose.Schema({
+	quizTitle: { 
 		type: String, 
 		
 	 },
 
-	formDescription:{
+	quizSubject:{
 		type:String,
+		
+
+	},
+
+	quizDate:{
+
+		type: String,
+	
+	},
+	quizTime: {
+		type: String,
 	
 	},
 
-	formCode: {
-		 type: String
+	quizDuration: {
+		type: String,	
+	},
+
+	quizCode: {
+		 type: String,
+		 required: true,
 
 	},
     question:[
-	{
-		quizquestion:{
+	{ quizquestion:{
 		questiontext: {
 			type: String,
 			required: true,
-			
 		},
 		options: [
 			 {
 				 text: {
 					 type: String,
 					 required: true,
-					
 				 },
 			 },
 		],
 		correctAns: {
 			type: String,
-			required: true,	
+			required: true,
 		},
 	}
-
     }],
 	
-	formStatus: {
+	quizStatus: {
 		type: Number,
 		default: 0,
 	},
@@ -48,4 +60,4 @@ const FormSchema = new mongoose.Schema({
  
   
 
-module.exports = mongoose.model("Form", FormSchema);
+module.exports = mongoose.model("Quiz", quizSchema);

@@ -1,29 +1,34 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const shortid = require("shortid")
-const Form = require("../models/form");
-const Question = require("../models/question");
+const Quiz = require("../models/quizmodel");
+
 
 
 
 const router = express.Router();
 
-//Create the form for quiz and feedback
-router.post(
-	"/createform",async (req, res, next) => {
-		
-			const quiz = new Form({
+//Create the form for quiz 
+router.post("/create",async (req, res, next) => {
+	
+			const quiz = new Quiz({
 				_id: new mongoose.Types.ObjectId(),
-				formName: req.body.formName,
-				formType: req.body.formType.toLowerCase(),
-                formCode: shortid.generate(),
-        
+				quizTitle: req.body.quizTitle,
+				quizSubject:req.body.quizSubject,
+				quizDate: req.body.quizDate,
+				quizTime: req.body.quizTime,
+				quizDuration: req.body.quizDuration,
+				quizCode: shortid.generate(),
+				question: req.body.question,
+				
 			});
 			quiz.save()
 				.then(async (result) => {
-                    res.send("created")
+					console.log("created quiz")
+					res.status(200).json({ message: "created quiz",result });
 				})
 				.catch((err) => {
+					console.log(err)
 					res.status(400).json({ error: "err" });
 				});
 		
