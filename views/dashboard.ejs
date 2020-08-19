@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-
-<script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
+    <title>Document</title>
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-auth.js"></script>
 <script>
-    var firebaseConfig = {
+ var firebaseConfig = {
     apiKey: "AIzaSyAnqIZj9_LLt8uYd7u3kzmZwt_2eup_J_s",
     authDomain: "quiz-portal-6a1de.firebaseapp.com",
     databaseURL: "https://quiz-portal-6a1de.firebaseio.com",
@@ -21,34 +20,46 @@
   firebase.initializeApp(firebaseConfig);
   const auth=firebase.auth();
 </script>
-<script src="https://www.gstatic.com/firebasejs/ui/4.6.0/firebase-ui-auth.js"></script>
-<link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.6.0/firebase-ui-auth.css" />
 <script type="text/javascript">
-    // FirebaseUI config.
-    var uiConfig = {
-      signInSuccessUrl: '/login',
-      signInOptions: [
-        // Leave the lines as is for the providers you want to offer your users.
-        firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-        firebase.auth.EmailAuthProvider.PROVIDER_ID
-      ],
-      // tosUrl and privacyPolicyUrl accept either url string or a callback
-      // function.
-      // Terms of service url/callback.
-      tosUrl: '<your-tos-url>',
-      // Privacy policy url/callback.
-      privacyPolicyUrl: function() {
-        window.location.assign('<your-privacy-policy-url>');
-      }
+    initApp = function() {
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+          // User is signed in.
+          var displayName = user.displayName;
+          var email = user.email;
+          user.getIdToken().then(function(accessToken) {
+            document.getElementById('sign-in-status').textContent = 'Signed in';
+            document.getElementById('sign-in').innerHTML = "<button onclick='logout(event)'>Sign out</button>";
+            document.getElementById('account-details').textContent = JSON.stringify({
+              displayName: displayName,
+              email: email
+            }, null, '  ');
+          });
+        } else {
+          
+        window.location.href = '/'
+        }
+      }, function(error) {
+        console.log(error);
+      });
     };
 
-    // Initialize the FirebaseUI Widget using Firebase.
-    var ui = new firebaseui.auth.AuthUI(firebase.auth());
-    // The start method will wait until the DOM is loaded.
-    ui.start('#firebaseui-auth-container', uiConfig);
+    window.addEventListener('load', function() {
+      initApp();
+    });
+//     const logout=document.querySelector('#logout');
+
+function logout(event){
+    event.preventDefault();
+    auth.signOut();
+};
+
   </script>
 </head>
 <body>
-  <div id="firebaseui-auth-container"></div>
+  <div id="sign-in-status"></div>
+  <div id="sign-in"></div>
+  <pre id="account-details"></pre>
 </body>
+    
 </html>

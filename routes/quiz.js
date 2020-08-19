@@ -34,4 +34,31 @@ router.post("/create",async (req, res, next) => {
 		
             });
 
+
+			//Edit the quiz
+router.put('/update/:id', async function(req, res)  {
+				let quiz = await Quiz.findById(req.params.id)
+				
+				quiz.quizTitle= req.body.quizTitle
+				quiz.quizSubject = req.body.quizSubject
+				quiz.quizDate = req.body.quizDate
+				quiz.quizTime =  req.body.quizTime
+				quiz.quizDuration = req.body.quizDuration
+				quiz.question =  req.body.question
+				
+			
+				quiz.save()
+				.then(async (result) => {
+					console.log("updated quiz")
+					res.status(200).json({ message: "updated quiz",result });
+				})
+				.catch((err) => {
+					console.log(err)
+					res.status(400).json({ error: "err" });
+				});
+		
+			
+			  
+			  })
+
 module.exports = router;
