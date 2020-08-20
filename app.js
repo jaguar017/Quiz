@@ -1,20 +1,14 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const methodOverride = require('method-override')
 const cors = require('cors')
 
 
-const passport = require("passport")
-const session = require('express-session')
-const MongoStore = require('connect-mongo')(session)
 
 require("dotenv").config();
 
-
-
-
 const app = express();
-
 
 
 //set up view engine as ejs
@@ -32,31 +26,27 @@ mongoose.Promise = global.Promise;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-   
-// Sessions
-app.use(
-    session({
-      secret: 'keyboard cat',
-      resave: false,
-      saveUninitialized: false,
-     store: new MongoStore({ mongooseConnection: mongoose.connection,touchAfter: 24 * 3600 }),
-    })
-)
-
-// initialize passport
-app.use(passport.initialize());
-app.use(passport.session());
+app.use(methodOverride('_method'))
 
 
 app.use(cors())
 
 //setup routes
+app.use("/", require("./routes/home"));
+app.use("/users", require("./routes/user"));
+app.use("/quiz", require("./routes/quiz"));
+app.use("/form", require("./routes/feedbackform"));
+  
+  // error handler
+  app.use((err, req, res, next) => {
+    console.log(err.message);
+    return res.status(400).send({
+      message: err.message,
+    });
+  });
 
 
 
-app.get('/',(req,res) => {
-    res.render('home')
-})
 
 const PORT = process.env.PORT || 3000;
 

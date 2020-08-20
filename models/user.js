@@ -1,48 +1,39 @@
 const mongoose = require("mongoose");
-
 const userSchema = mongoose.Schema({
-
-	googleId: {
-		type: String,
-	},
-    name: { 
-        type: String,
-        required: true,
-     },
-
-	email: {
-		type: String,
-        lowercase: true,
-        required: true,
-		match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
-	},
-	mobileNumber: {
-        type: Number,
-        match: /^([7-9][0-9]{9})$/g,
-	},
-	password: { 
-        type: String ,
-    },
-	
-	emailVerified: { 
-        type: Boolean ,
-        default:false},
-
-    token: {
-            type: String,
-        },
-    passResetKey: { 
-        type: String
-     },
-    passKeyExpires: { 
-        type: Number
-     },
-    verificationKey: { 
-            type: String
-         },
-    verificationKeyExpires: { 
-            type: Number 
-        },
+  user_id: {
+    type: String,
+    required: true,
+    unique: true,
+    validate: /^.{28}$/,
+    immutable: true,
+    index: true,
+  },
+  email: {
+    type: String,
+    trim: true,
+    validate: /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/,
+    required: true,
+    unique: true,
+    immutable: true,
+  },
+  profilePhoto: {
+    type: String,
+    validate: /^data:image\/[^;]+;base64[^"]+$/,
+  },
+  username: {
+    type: String,
+    unique: true,
+    required: true,
+    immutable: true,
+    index: true,
+    trim: true,
+  },
+  bio: {
+    type: String,
+    default: "",
+    trim: true,
+  },
 });
 
-module.exports = mongoose.model("User", userSchema);
+const User = mongoose.model("User", userSchema);
+module.exports = User;
