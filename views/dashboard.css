@@ -1,0 +1,60 @@
+.box
+{
+    margin: 3%;
+    display:inline-block;
+   
+
+}
+.card
+{
+    margin:0.25%;
+    border-radius: 5%
+}
+.expired
+{
+    border-top-left-radius: 25%;
+    margin: 3%;
+}
+.first
+{
+    background-color:#6672FB;
+    display: inline-block;
+    border-radius: 5%;
+    margin:3%;
+    padding:5%;
+    width:250px;
+}
+.second
+{
+    background-color: #E8523F;
+    display: inline-block;
+    border-radius: 5%;
+    margin:3%;
+    padding: 5%;
+}
+.third
+{
+    background-color:#f8b849;
+    display: inline-block;
+    border-radius: 5%;
+    margin:3%;
+    padding: 5%;
+}
+.expired
+{
+    background-color: gray;
+
+}
+.notepad
+{
+    display: inline-block;
+}
+.subject
+{
+    display: inline-block;
+    border-radius: 5%;
+}
+.button
+{
+    display: inline-block;
+}
